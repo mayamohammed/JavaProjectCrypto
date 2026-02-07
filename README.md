@@ -349,13 +349,13 @@ Ce projet est à but **éducatif et démonstratif**. Pour un usage en production
 ## 📸 Captures d'écran
 
 ### Login
-![Login](docs/images/login.png)
+![Login](images/login.png)
 
 ### Dashboard Utilisateur
-![User Dashboard](docs/images/user_dashboard.png)
+![User Dashboard](images/user_dashboard.png)
 
 ### Dashboard Admin
-![Admin Dashboard](docs/images/admin_dashboard.png)
+![Admin Dashboard](images/admin_dashboard.png)
 
 ---
 
