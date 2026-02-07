@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane fx:id="registerContainer" prefHeight="720.0" prefWidth="1280.0" stylesheets="@style.css"
+           xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="cryptographie.maya.controller.RegisterController">
+
+    <ImageView fitHeight="720.0" fitWidth="1280.0" preserveRatio="false">
+        <Image url="@../img/bg_cyber1.png" />
+    </ImageView>
+
+    <Region style="-fx-background-color: rgba(0, 0, 0, 0.6);" />
+
+    <VBox alignment="CENTER" spacing="20.0" maxWidth="500.0" maxHeight="650.0" styleClass="glass-card">
+        <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+        <Label text="INSCRIPTION SÉCURISÉE" styleClass="main-title" />
+
+        <VBox spacing="10">
+            <HBox spacing="10">
+                <TextField fx:id="firstNameTextField" promptText="Prénom" styleClass="glass-input" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="lastNameTextField" promptText="Nom" styleClass="glass-input" HBox.hgrow="ALWAYS" />
+            </HBox>
+            <TextField fx:id="userNameTextField" promptText="Identifiant" styleClass="glass-input" />
+            <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="glass-input" />
+            <PasswordField fx:id="confirmPasswordField" promptText="Confirmer" styleClass="glass-input" />
+        </VBox>
+
+        <Button fx:id="registerButton" text="CRÉER MON COMPTE" onAction="#handleRegister" maxWidth="Infinity" styleClass="btn-login" />
+        <Button fx:id="closeButton" text="RETOUR" onAction="#handleBackToLogin" styleClass="btn-register-outline" />
+    </VBox>
+</StackPane>

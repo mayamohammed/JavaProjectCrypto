@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.chart.*?>
+
+<BorderPane id="mainContainer" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cryptographie.maya.controller.AdminDashboardController"
+            stylesheets="@../css/style.css" prefWidth="1200" prefHeight="800">
+
+    <!-- TOP: title + stats + charts -->
+    <top>
+        <VBox spacing="12" styleClass="glass-card" maxHeight="440" minHeight="180">
+            <padding>
+                <Insets top="12" right="12" bottom="12" left="12"/>
+            </padding>
+
+            <!-- Header row -->
+            <HBox styleClass="nav-bar topbar" spacing="12">
+                <padding>
+                    <Insets top="8" right="12" bottom="8" left="12"/>
+                </padding>
+                <children>
+                    <VBox>
+                        <Label text="BLUELOCKER — ADMIN DASHBOARD" styleClass="main-title"/>
+                        <Label text="Secure Session" styleClass="sub-title"/>
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <TextField fx:id="searchField" promptText="Rechercher par nom / email..." prefWidth="320" styleClass="glass-input"/>
+                    <ChoiceBox fx:id="roleFilter" prefWidth="120"/>
+
+                    <Button fx:id="refreshUsersBtn" text="Rafraîchir" styleClass="btn-action-alt"/>
+                    <!-- onAction ajouté ici -->
+                    <Button fx:id="logoutBtn" text="Déconnexion" styleClass="btn-danger" onAction="#handleLogout"/>
+                </children>
+            </HBox>
+
+            <!-- stats row -->
+            <HBox spacing="12" styleClass="stats-row">
+                <padding>
+                    <Insets top="6" right="12" bottom="6" left="12"/>
+                </padding>
+                <children>
+                    <VBox styleClass="stat-card">
+                        <Label text="Utilisateurs totaux" styleClass="label-small"/>
+                        <Label fx:id="lblTotalUsers" text="..." styleClass="stat-number"/>
+                    </VBox>
+                    <VBox styleClass="stat-card">
+                        <Label text="Administrateurs" styleClass="label-small"/>
+                        <Label fx:id="lblAdmins" text="..." styleClass="stat-number"/>
+                    </VBox>
+                    <VBox styleClass="stat-card">
+                        <Label text="Items totaux" styleClass="label-small"/>
+                        <Label fx:id="lblTotalItems" text="..." styleClass="stat-number"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                </children>
+            </HBox>
+
+            <!-- Charts row -->
+            <HBox spacing="12" styleClass="charts-row">
+                <padding>
+                    <Insets top="8" right="12" bottom="8" left="12"/>
+                </padding>
+                <children>
+                    <VBox spacing="6" prefWidth="360" styleClass="glass-card">
+                        <Label text="Répartition des rôles" styleClass="section-title"/>
+                        <PieChart fx:id="roleChart" prefHeight="200" prefWidth="340"/>
+                    </VBox>
+
+                    <VBox spacing="6" prefWidth="760" styleClass="glass-card">
+                        <Label text="Top 10 : utilisateurs (nb items)" styleClass="section-title"/>
+                        <BarChart fx:id="itemsBarChart" prefHeight="200" prefWidth="740">
+                            <xAxis>
+                                <CategoryAxis fx:id="itemsCategoryAxis" label="Utilisateur"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="itemsNumberAxis" label="Nombre d'items"/>
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+                </children>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- CENTER: split pane with users list and details -->
+    <center>
+        <SplitPane fx:id="mainSplit" orientation="HORIZONTAL" dividerPositions="0.62">
+            <items>
+
+                <!-- LEFT: Users table -->
+                <VBox spacing="8" prefWidth="620" minHeight="200">
+                    <padding>
+                        <Insets top="8" right="8" bottom="8" left="8"/>
+                    </padding>
+                    <children>
+                        <Label text="Utilisateurs" styleClass="section-title"/>
+
+                        <!-- Table des utilisateurs -->
+                        <TableView fx:id="usersTable"
+                                   prefHeight="420"
+                                   styleClass="cyber-table user-table"
+                                   VBox.vgrow="ALWAYS">
+                            <placeholder>
+                                <Label text="Aucun utilisateur" />
+                            </placeholder>
+                            <columns>
+                                <TableColumn fx:id="colUserId"    text="ID"      prefWidth="50"/>
+                                <TableColumn fx:id="colUsername"  text="Nom"     prefWidth="180"/>
+                                <TableColumn fx:id="colRole"      text="Role"    prefWidth="80"/>
+                                <TableColumn fx:id="colItemCount" text="Items"   prefWidth="70"/>
+                                <TableColumn fx:id="colCreated"   text="Créé le" prefWidth="140"/>
+                            </columns>
+                        </TableView>
+
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <children>
+
+
+                                <Button fx:id="deleteUserBtn" text="Supprimer"  styleClass="btn-danger"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- RIGHT: user details + items -->
+                <VBox spacing="10" prefWidth="560" styleClass="glass-card user-detail-card" minHeight="200">
+                    <padding>
+                        <Insets top="8" right="8" bottom="8" left="8"/>
+                    </padding>
+                    <children>
+
+                        <!-- bloc détails -->
+                        <Label text="Détails de l'utilisateur" styleClass="section-title detail-title"/>
+
+                        <HBox spacing="12">
+                            <children>
+                                <ImageView fx:id="avatarView" fitWidth="96" fitHeight="96"
+                                           pickOnBounds="true" preserveRatio="true" styleClass="avatar"/>
+                                <VBox spacing="4">
+                                    <Label fx:id="lblUserName"
+                                           text="Sélectionnez un utilisateur"
+                                           styleClass="label-username user-name-label"/>
+                                    <Label fx:id="lblUserRole" text="USER" styleClass="user-role-badge"/>
+                                    <Label fx:id="lblUserEmail" text="email@example.com" styleClass="label-info"/>
+                                    <Label fx:id="lblUserCreated" text="Créé le: -" styleClass="label-info"/>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- clé publique (limitée en hauteur) -->
+                        <Label fx:id="lblPublicKeyLabel" text="Clé publique (troncature)" styleClass="label-small"/>
+                        <TextArea fx:id="txtPublicKey"
+                                  editable="false"
+                                  wrapText="true"
+                                  prefRowCount="2"
+                                  maxHeight="80"
+                                  styleClass="table-cell-text"/>
+
+                        <!-- bloc items -->
+                        <Label text="Items de l'utilisateur sélectionné"
+                               styleClass="section-title detail-section-label"/>
+
+                        <TableView fx:id="itemsTable"
+                                   styleClass="cyber-table user-items-table"
+                                   VBox.vgrow="ALWAYS">
+                            <placeholder>
+                                <Label text="Aucun item pour cet utilisateur" />
+                            </placeholder>
+                            <columns>
+                                <TableColumn fx:id="colItemId"    text="ID"    prefWidth="60"/>
+                                <TableColumn fx:id="colItemTitle" text="Titre" prefWidth="320"/>
+                                <TableColumn fx:id="colItemType"  text="Type"  prefWidth="120"/>
+                            </columns>
+                        </TableView>
+
+                    </children>
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

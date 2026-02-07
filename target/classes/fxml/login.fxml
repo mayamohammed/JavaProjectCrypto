@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane fx:id="mainContainer" prefHeight="720.0" prefWidth="1280.0" stylesheets="@style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cryptographie.maya.controller.LoginController">
+
+    <ImageView fx:id="backgroundImage" fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="false">
+        <Image url="@../img/bg_cyber1.png" />
+    </ImageView>
+
+    <Region style="-fx-background-color: rgba(0, 0, 0, 0.5);" />
+
+    <VBox alignment="CENTER" spacing="30.0" maxWidth="480.0" maxHeight="580.0" styleClass="glass-card">
+        <padding>
+            <Insets top="50" right="50" bottom="50" left="50"/>
+        </padding>
+
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="SECURE FILE VAULT" styleClass="main-title" />
+            <Label text="BLUELOCKER SYSTEM" styleClass="sub-title" />
+        </VBox>
+
+        <VBox spacing="20.0">
+            <TextField fx:id="userNameTextField" promptText="Identifiant" styleClass="glass-input" />
+            <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="password-field" />
+        </VBox>
+
+        <Button fx:id="loginButton" text="SE CONNECTER" maxWidth="Infinity" styleClass="btn-login" onAction="#handleLogin" />
+
+        <Hyperlink text="Mot de passe oublié ?" styleClass="forgot-link" />
+
+        <Separator prefWidth="200.0" style="-fx-opacity: 0.1;" />
+
+        <Button fx:id="registerButton" onAction="#handleShowRegister" text="Créer un compte" styleClass="btn-register-outline" />
+    </VBox>
+</StackPane>
